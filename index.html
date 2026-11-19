@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RoyalRide | Premium Car Rentals</title>
+  <meta name="description" content="Book affordable and reliable car rentals with RoyalRide." />
+  <meta property="og:title" content="RoyalRide | Premium Car Rentals" />
+  <meta property="og:description" content="Book affordable and reliable car rentals with RoyalRide." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #111823;
+      --muted: #8aa0b2;
+      --text: #e7eef5;
+      --brand: #4f8cff;
+      --brand-2: #00d3a7;
+      --danger: #ff6b6b;
+      --ring: 0 0 0 3px rgba(79, 140, 255, .35);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #0b0f14 0%, #0d131b 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11, 15, 20, .72);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #16202c;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: .3px;
+      line-height: 1;
+    }
+    .brand-badge {
+      width: 280px;
+      height: 120px;
+      display: block;
+      object-fit: contain;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .back-btn {
+      position: fixed;
+      left: 18px;
+      top: 88px;
+      z-index: 70;
+      padding: 10px 14px;
+      font-size: 1.2rem;
+      line-height: 1;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      min-width: 44px;
+    }
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 1.4rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    .side-nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 12, .6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+      z-index: 90;
+    }
+    .side-nav-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .side-nav {
+      position: fixed;
+      top: 88px;
+      right: 16px;
+      width: 240px;
+      height: auto;
+      min-height: 180px;
+      background: rgba(11, 15, 20, .98);
+      border-left: 1px solid #16202c;
+      border-radius: 16px;
+      padding: 18px 18px 24px;
+      transition: right .28s ease;
+      z-index: 100;
+      box-shadow: 0 14px 32px rgba(0,0,0,.35);
+      transform: translateX(110%);
+    }
+    .side-nav.open { transform: translateX(0); right: 16px; }
+    .side-nav-head {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-weight: 700;
+      padding-left: 36px;
+    }
+    .side-nav-back {
+      position: absolute;
+      left: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(79, 140, 255, .08);
+      border: 1px solid rgba(79, 140, 255, .25);
+      color: var(--text);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .side-nav-close {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.8rem;
+      width: auto;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .side-links {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      color: var(--muted);
+    }
+    .side-links a { width: 100%; }
+    .side-links .btn { width: 100%; margin-top: 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform .2s ease, filter .2s ease;
+      border: 1px solid transparent;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #091018;
+    }
+    .btn-secondary {
+      background: rgba(79, 140, 255, .08);
+      border-color: rgba(79, 140, 255, .25);
+      color: var(--text);
+    }
+
+    .hero { padding: 48px 0 24px; }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; } }
+
+    .headline { font-size: clamp(32px, 5vw, 52px); line-height: 1.1; margin: 0 0 12px; }
+    .sub { max-width: 58ch; color: var(--muted); }
+    .feature-list { padding-left: 18px; color: var(--muted); }
+    .feature-list li { margin-bottom: 8px; }
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .cta-btn {
+      min-width: 220px;
+      padding: 18px 28px;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(79, 140, 255, 0.35);
+      animation: blink 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes blink {
+      from { opacity: 1; transform: scale(1); box-shadow: 0 0 18px rgba(79, 140, 255, 0.5); }
+      to { opacity: 0.88; transform: scale(1.02); box-shadow: 0 0 28px rgba(0, 211, 167, 0.8); }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #1a2633;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .booking { padding: 22px; }
+    .grid { display: grid; gap: 14px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 720px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; }
+    input, select, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #243142;
+      background: #0c121a;
+      color: var(--text);
+      padding: 12px 14px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: var(--ring);
+      border-color: rgba(79, 140, 255, .7);
+    }
+    .actions { display: flex; gap: 12px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+    .note { font-size: 13px; color: var(--muted); }
+    .error { color: var(--danger); font-size: 13px; min-height: 18px; }
+    .success { color: var(--brand-2); font-size: 14px; font-weight: 600; min-height: 20px; }
+
+    .section { padding: 28px 0 8px; }
+    .section h2 { margin-bottom: 20px; }
+    .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    @media (max-width: 800px) { .features { grid-template-columns: 1fr; } }
+    .feature { padding: 22px; }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .list { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .list { grid-template-columns: 1fr; } }
+    .tile { overflow: hidden; }
+    .tile img { width: 100%; height: 180px; object-fit: cover; }
+    .tile-body { padding: 18px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid #233244;
+      color: var(--muted);
+    }
+    .price { font-weight: 800; font-size: 1.5rem; margin: 12px 0; }
+    .card-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .muted { color: var(--muted); }
+
+    footer {
+      border-top: 1px solid #16202c;
+      margin-top: 36px;
+      padding: 20px 0;
+      color: #9bb0c4;
+    }
+
+    @media (max-width: 760px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-toggle {
+        display: inline-flex;
+      }
+    }
+    @media (max-width: 640px) {
+      .nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="RoyalRide home">
+        <img src="New folder/logo.png" alt="RoyalRide SUV logo" class="brand-badge" aria-hidden="true" />
+      </a>
+      <div class="nav-actions">
+        <button type="button" class="btn btn-secondary back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+      </div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="fleet.html">Fleet</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="btn btn-primary">Book now</a>
+      </nav>
+    </div>
+  </header>
+  <div class="side-nav-overlay" id="sideNavOverlay"></div>
+  <aside class="side-nav" id="sideNav" aria-label="Mobile menu">
+    <div class="side-nav-head">
+      <button class="side-nav-back" id="sideNavBack" aria-label="Go back">←</button>
+      <span>Menu</span>
+      <button class="side-nav-close" id="closeNav" aria-label="Close menu">×</button>
+    </div>
+    <nav class="side-links" aria-label="Mobile navigation">
+      <a href="index.html">Home</a>
+      <a href="fleet.html">Fleet</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="booking.html" class="btn btn-primary">Book now</a>
+    </nav>
+  </aside>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1 class="headline">Rent the right car, at the right price.</h1>
+          <p class="sub">Transparent pricing, flexible pickup and drop-off, and 24/7 support. Book a reliable vehicle in minutes with no hidden fees.</p>
+          <ul class="feature-list">
+            <li>Free cancellation up to 24 hours before pickup</li>
+            <li>No hidden charges or credit-card fees</li>
+            <li>Support for city drives, family trips, and long-distance travel</li>
+          </ul>
+          <div class="hero-cta">
+            <a href="booking.html" class="btn btn-primary cta-btn">Book Journey</a>
+            <a href="fleet.html" class="btn btn-secondary cta-btn">Rent Cars</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What drivers say</h2>
+      <div class="features">
+        <div class="card feature">
+          <p>“The car was spotless and the check-in process was refreshingly quick.”</p>
+          <p class="muted">— Priya K.</p>
+        </div>
+        <div class="card feature">
+          <p>“Everything was clear, honest, and easy to understand before booking.”</p>
+          <p class="muted">— Jacob L.</p>
+        </div>
+        <div class="card feature">
+          <p>“The SUV made our weekend trip comfortable and stress-free.”</p>
+          <p class="muted">— Sara M.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> RoyalRide Auto Rental. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const navToggle = document.getElementById('navToggle');
+    const sideNav = document.getElementById('sideNav');
+    const sideNavOverlay = document.getElementById('sideNavOverlay');
+    const closeNav = document.getElementById('closeNav');
+    const sideNavBack = document.getElementById('sideNavBack');
+
+    const toggleNav = () => {
+      sideNav.classList.toggle('open');
+      sideNavOverlay.classList.toggle('show');
+    };
+
+    navToggle?.addEventListener('click', toggleNav);
+    closeNav?.addEventListener('click', toggleNav);
+    sideNavOverlay?.addEventListener('click', toggleNav);
+    sideNavBack?.addEventListener('click', () => window.history.back());
+  </script>
+</body>
+</html>
